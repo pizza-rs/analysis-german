@@ -1,50 +1,72 @@
-# pizza-analysis-german
+<div align="center">
 
-German language analysis with umlaut/ß normalization, light/minimal stemmers, and stop words.
+# 🇩🇪 pizza-analysis-german
 
-Part of the [Pizza](https://pizza.rs) search engine.
+**German text analysis plugin for [INFINI Pizza](https://pizza.rs)**
+
+[![Crate](https://img.shields.io/badge/crate-pizza--analysis--german-blue)](https://github.com/pizza-rs/analysis-german)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+</div>
+
+---
+
+## Overview
+
+German language analysis with umlaut normalization, light stemming, and stop words.
+Handles German-specific orthographic conventions including ä→ae, ö→oe, ü→ue, ß→ss
+normalization.
 
 ## Components
 
-| Name | Type | Description |
-|------|------|-------------|
-| `german_normalization` | Token Filter | Normalizes ä→a, ö→o, ü→u, ß→ss, and ae/oe/ue digraphs |
-| `german_stem` | Token Filter | German light stemmer — removes common suffixes |
-| `german_minimal_stem` | Token Filter | German minimal stemmer — conservative suffix removal |
-| `german_stop` | Token Filter | German stop words filter (231 words) |
-| `german` | Analyzer | Full pipeline: lowercase → normalization → stop → stem |
+| Type | Name | Description |
+|:-----|:-----|:------------|
+| TokenFilter | `german_normalization` | Normalize umlauts and eszett (ä→a, ö→o, ü→u, ß→ss) |
+| TokenFilter | `german_light_stem` | German light stemmer |
+| TokenFilter | `german_stop` | German stop words (231 entries) |
+| Analyzer | `german` | Full pipeline: lowercase → normalization → light_stem → stop |
 
-## Usage
+### Normalization Rules
 
-### Built-in Analyzer
+| Input | Output | Rule |
+|:------|:-------|:-----|
+| ä / ae | a | Umlaut-a |
+| ö / oe | o | Umlaut-o |
+| ü / ue | u | Umlaut-u |
+| ß | ss | Eszett |
 
-```json
-{
-  "analyzer": {
-    "type": "german"
-  }
-}
+## Example
+
+```rust
+use pizza_engine::analysis::AnalysisFactory;
+
+let mut factory = AnalysisFactory::new();
+pizza_analysis_german::register_all(&mut factory);
+
+let analyzer = factory.get_analyzer("german").unwrap();
+// "Straßenbäume" → ["strassbaum"]
 ```
 
-### Custom Pipeline
+## Installation
 
-```json
-{
-  "analyzer": {
-    "type": "custom",
-    "tokenizer": "standard",
-    "filter": ["german_normalization", "german_stem", "german_minimal_stem", "german_stop"]
-  }
-}
+```toml
+[dependencies]
+pizza-analysis-german = "0.1"
+```
+
+Or via `pizza-analysis-all`:
+
+```toml
+[dependencies]
+pizza-analysis-all = { version = "0.1", features = ["german"] }
 ```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
 
-## Related Crates
+---
 
-- [analysis-core](https://github.com/pizza-rs/analysis-core) — Core analysis components and pipeline
-- [analysis-icu](https://github.com/pizza-rs/analysis-icu) — ICU Unicode normalization and tokenization
-- [analysis-english](https://github.com/pizza-rs/analysis-english) — English analysis
-- [analysis-all](https://github.com/pizza-rs/analysis-all) — Meta-crate registering all analyzers
+<div align="center">
+<sub>Part of the <a href="https://pizza.rs">INFINI Pizza</a> ecosystem</sub>
+</div>

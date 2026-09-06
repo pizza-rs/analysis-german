@@ -1,7 +1,9 @@
 //! Comprehensive tests for pizza-analysis-german.
 
 use pizza_analysis_german::*;
-use pizza_engine::analysis::{AnalysisFactory, Token, TokenFilter};
+use pizza_engine::analysis::AnalysisFactory;
+use pizza_engine::analysis::Token;
+use pizza_engine::analysis::TokenFilter;
 
 fn make_token(term: &str) -> Token<'_> {
     Token::new(term, 0, term.len() as u32, 0)
@@ -172,7 +174,9 @@ fn stop_construction() {
 #[test]
 fn stop_filters_common_words() {
     let f = GermanStopFilter::new();
-    let stop_words = ["der", "die", "das", "und", "ist", "in", "von", "den", "mit", "nicht"];
+    let stop_words = [
+        "der", "die", "das", "und", "ist", "in", "von", "den", "mit", "nicht",
+    ];
     for word in &stop_words {
         let mut token = make_token(word);
         let (deleted, _) = f.filter(&mut token);

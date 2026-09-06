@@ -18,5 +18,6 @@ pub mod register;
 
 pub use normalization::GermanNormalizationFilter;
 pub use register::register_all;
-pub use stem::{GermanLightStemFilter, GermanMinimalStemFilter};
+pub use stem::GermanLightStemFilter;
+pub use stem::GermanMinimalStemFilter;
 pub use stop::GermanStopFilter;

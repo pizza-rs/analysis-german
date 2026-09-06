@@ -3,7 +3,8 @@
 use alloc::borrow::Cow;
 use alloc::string::String;
 use alloc::vec::Vec;
-use pizza_engine::analysis::{Token, TokenFilter};
+use pizza_engine::analysis::Token;
+use pizza_engine::analysis::TokenFilter;
 
 /// German light stemmer — removes plural, case, and derivational suffixes.
 #[derive(Clone, Debug, Default)]
@@ -46,13 +47,24 @@ fn stem_german_light(word: &str) -> String {
     let mut changed = false;
     for c in &chars {
         match c {
-            'ä' => { out.push('a'); changed = true; }
-            'ö' => { out.push('o'); changed = true; }
-            'ü' => { out.push('u'); changed = true; }
+            'ä' => {
+                out.push('a');
+                changed = true;
+            }
+            'ö' => {
+                out.push('o');
+                changed = true;
+            }
+            'ü' => {
+                out.push('u');
+                changed = true;
+            }
             _ => out.push(*c),
         }
     }
-    if changed { result = out; }
+    if changed {
+        result = out;
+    }
 
     result
 }

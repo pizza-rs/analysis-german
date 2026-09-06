@@ -4,16 +4,24 @@ use alloc::boxed::Box;
 use alloc::vec;
 use alloc::vec::Vec;
 
-use pizza_engine::analysis::{
-    Analyzer, AnalysisFactory, LowercaseNormalizer, Normalizer, StandardTokenizer, TokenFilter,
-    Tokenizer,
-};
+use pizza_engine::analysis::AnalysisFactory;
+use pizza_engine::analysis::Analyzer;
+use pizza_engine::analysis::LowercaseNormalizer;
+use pizza_engine::analysis::Normalizer;
+use pizza_engine::analysis::StandardTokenizer;
+use pizza_engine::analysis::TokenFilter;
+use pizza_engine::analysis::Tokenizer;
 
-use crate::{GermanLightStemFilter, GermanNormalizationFilter, GermanStopFilter};
+use crate::GermanLightStemFilter;
+use crate::GermanNormalizationFilter;
+use crate::GermanStopFilter;
 
 /// Register German token filters and the `"german"` analyzer.
 pub fn register_all(factory: &mut AnalysisFactory) {
-    factory.register_token_filter("german_normalization", Box::new(GermanNormalizationFilter::new()));
+    factory.register_token_filter(
+        "german_normalization",
+        Box::new(GermanNormalizationFilter::new()),
+    );
     factory.register_token_filter("german_light_stem", Box::new(GermanLightStemFilter::new()));
     factory.register_token_filter("german_stop", Box::new(GermanStopFilter::new()));
 
